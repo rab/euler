@@ -37,6 +37,11 @@ class Prime
     factors
   end
 
+  # Need to incorporate the sigma function
+  # http://primes.utm.edu/glossary/xpage/SigmaFunction.html
+  # which is the sum of the positive divisors of n
+  # sigma(n) == divisors(n).sum
+
   def self.divisors(n,exclude_self=nil)
     factors = factorize(n)
     d=[]
