@@ -10,15 +10,41 @@
 # What is the greatest product of four adjacent numbers in any direction (up,
 # down, left, right, or diagonally) in the 20x20 grid?
 
+require 'enumerator'
+require '../ext/enumerable'
+
 grid = []
 DATA.each do |line|
   grid << line.split.map{|n|n.to_i}
 end
+#puts grid.map{|row| row.map{|e|"%02d"%e}.join(' ')}.join("\n")
 
-puts "unsolved"; exit
+prods = []
 
-require 'pp'
-grid.each {|r| p r}
+# horizontal
+prods << grid.map {|row| h=[]; row.each_cons(4) {|four| h << four.product }; h.max }.max
+
+# vertical
+prods << grid.transpose.map {|row| v=[]; row.each_cons(4) {|four| v << four.product }; v.max }.max
+
+# nw-se diagonal
+d1=[]
+grid.each_cons(4) {|rows| d1 << rows.map_with_index {|row,i| row[i..(-4+i)] }.transpose.map{|four| four.product}.max }
+prods << d1.max
+
+# ne-sw diagonal
+d2=[]
+grid.each_cons(4) {|rows| d2 << rows.map_with_index {|row,i| row[(3-i)..(-1-i)] }.transpose.map{|four| four.product}.max }
+prods << d2.max
+
+# p prods
+# [48477312, 51267216, 40304286, 70600674]
+puts prods.max
+# 70600674
+
+# real	0m0.021s
+# user	0m0.016s
+# sys	0m0.005s
 
 __END__
   08  02  22  97  38  15  00  40  00  75  04  05  07  78  52  12  50  77  91  08
