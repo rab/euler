@@ -15,4 +15,34 @@
 #
 # Evaluate the sum of all the amicable numbers under 10000.
 
-puts "unsolved"
+require 'primes'
+require '../ext/enumerable'
+class Integer
+  def d
+    Prime.divisors(self,true).sum
+  end
+end
+
+$stdout.sync = true
+amicable = []
+nope = []
+10_000.times do |a|
+  next if Prime.test?(a) || amicable.include?(a) || nope.include?(a)
+  print '.' if a%100==0
+  b = a.d
+  next if b == a
+  if a == b.d
+    amicable.concat([a,b])
+  else
+    nope << b
+  end
+end
+
+p amicable.sort
+puts amicable.sum
+# .............................................................................[220, 284, 1184, 1210, 2620, 2924, 5020, 5564, 6232, 6368]
+# 31626
+
+# real	9m25.230s
+# user	9m12.743s
+# sys	0m4.016s

@@ -1,4 +1,5 @@
 require 'sieve'
+require '../ext/enumerable'
 class Prime
   # print "Initializing primes to 1_000_000 ... "
   # start = Time.now.to_i
@@ -18,6 +19,11 @@ class Prime
     @@primes.select{|p| p <= x}
   end
 
+  def self.test?(n)
+    upto(n)
+    @@primes.include?(n)
+  end
+
   def self.factorize(n)
     factors = []
     limit = Math.sqrt(n).ceil
@@ -29,5 +35,16 @@ class Prime
     end
     factors << n unless n == 1
     factors
+  end
+
+  def self.divisors(n,exclude_self=nil)
+    factors = factorize(n)
+    d=[]
+    (2**(factors.size)).times do |x|
+      d << factors.map_with_index {|e,i| e**x[i]}.product
+    end
+    d = d.uniq.sort
+    d.pop if exclude_self
+    d
   end
 end
