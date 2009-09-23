@@ -7,4 +7,10 @@ class PrimeTest < Test::Unit::TestCase
       assert_equal tau, Prime.divisors(n), "tau(#{n}) => #{tau}"
     end
   end
+
+  def test_factorize
+    { 2 => [2], 3=>[3], 16=>[2,2,2,2],  2310 => [2,3,5,7,11], 60 => [2,2,3,5] }.each do |n,factors|
+      assert_equal factors, Prime.factorize(n).sort, "#{n} => #{factors.inspect}.product"
+    end
+  end
 end

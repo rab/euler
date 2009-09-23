@@ -27,7 +27,9 @@ class Prime
   def self.factorize(n)
     factors = []
     limit = Math.sqrt(n).ceil
-    to(limit).each do |f|
+    upto(limit)
+    @@primes.each do |f|
+      break if f > limit
       while n%f == 0
         factors << f
         n /= f
