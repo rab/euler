@@ -42,14 +42,17 @@ class Prime
   # which is the sum of the positive divisors of n
   # sigma(n) == divisors(n).sum
 
+  # AH! Actually, I want the tau function
+  # http://primes.utm.edu/glossary/xpage/Tau.html
   def self.divisors(n,exclude_self=nil)
     factors = factorize(n)
-    d=[]
-    (2**(factors.size)).times do |x|
-      d << factors.map_with_index {|e,i| e**x[i]}.product
+    tau_exponents = Hash.new {|h,k| h[k]=1}
+    factors.each {|f| tau_exponents[f] += 1}
+    tau = tau_exponents.values.product
+    if exclude_self
+      tau - 1
+    else
+      tau
     end
-    d = d.uniq.sort
-    d.pop if exclude_self
-    d
   end
 end
