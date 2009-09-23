@@ -44,6 +44,12 @@ class Prime
   # which is the sum of the positive divisors of n
   # sigma(n) == divisors(n).sum
 
+  def self.sigma(n)
+    factors = factorize(n)
+    factor_exponents = factors.count_by {|f| f}
+    factor_exponents.map {|p,n| (p**(n+1) - 1)/(p-1) }.product
+  end
+
   # AH! Actually, I want the tau function
   # http://primes.utm.edu/glossary/xpage/Tau.html
   def self.divisors(n,exclude_self=nil)
