@@ -1,5 +1,9 @@
 require 'sieve'
-require '../ext/enumerable'
+begin
+  require '../ext/enumerable'
+rescue LoadError
+  require File.expand_path('../ext/enumerable', File.dirname(__FILE__))
+end
 class Prime
   # print "Initializing primes to 1_000_000 ... "
   # start = Time.now.to_i

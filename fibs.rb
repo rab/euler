@@ -18,3 +18,10 @@ class Fibs
     @limit += 1
   end
 end
+
+Math.class_eval do
+  SQRT5 = Math.sqrt(5)
+  def self.fib(n)
+    (((1+SQRT5)**n - (1-SQRT5)**n)/(2**n * SQRT5)).to_i
+  end
+end
