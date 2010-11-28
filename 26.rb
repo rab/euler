@@ -19,3 +19,42 @@
 # Find the value of d < 1000 for which 1/d contains the longest recurring cycle
 # in its decimal fraction part.
 
+largest_cycle = [1,0]
+(2...1000).each do |d|
+  cycles = {}
+  num = 10
+  digits = []
+  catch (:found) {
+    until num.zero?
+      while d > num
+        num *= 10
+        digits << 0
+      end
+      q, r = num.divmod d
+      digits << q
+      if cycles[num]
+        l = digits.length - cycles[num]
+        puts "1/%d => 0.%s(%s)  %d"%[d,
+                                     digits[0, l].join,
+                                     digits[(digits.length - l)..-1].join,
+                                     l,
+                                    ]
+        largest_cycle = [d,l] if l > largest_cycle[1]
+        throw :found
+      end
+      throw :found if r.zero?
+      cycles[num] = digits.length
+      num = r * 10
+    end
+  }
+end
+
+puts "Largest cycle from %d (length %d)"%largest_cycle
+
+__END__
+Largest cycle from 983 (length 982)
+
+real	0m0.430s
+user	0m0.310s
+sys	0m0.028s
+
